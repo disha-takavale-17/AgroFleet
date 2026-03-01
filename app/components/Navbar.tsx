@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Leaf } from "lucide-react";
+import { Tractor } from "lucide-react";
 
 export default function Navbar() {
   return (
@@ -9,7 +9,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
             <div className="w-8 h-8 bg-gradient-to-br from-green-600 to-green-400 rounded-lg flex items-center justify-center group-hover:shadow-lg transition">
-              <Leaf className="w-5 h-5 text-white" />
+              <Tractor className="w-5 h-5 text-white" />
             </div>
             <span className="text-xl font-bold text-green-900">AgroFleet</span>
           </Link>

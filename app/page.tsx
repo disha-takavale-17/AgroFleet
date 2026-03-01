@@ -2,6 +2,7 @@ import { ChevronRight, Tractor, Leaf, Zap, ShieldCheck, TrendingUp, Award } from
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Home() {
   return (
@@ -58,13 +59,15 @@ export default function Home() {
             </div>
 
             {/* Right Visual */}
-            <div className="relative h-96 md:h-full min-h-96 bg-white/10 backdrop-blur rounded-2xl overflow-hidden">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center space-y-4">
-                  <Tractor className="w-32 h-32 mx-auto text-white opacity-80" />
-                  <p className="text-lg font-semibold text-white">Smart Farm Management</p>
-                </div>
-              </div>
+            <div className="relative h-96 md:h-full min-h-96 rounded-2xl overflow-hidden shadow-2xl">
+              <Image
+                src="https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=800&h=600&fit=crop"
+                alt="Farmer working in field with tractor"
+                fill
+                className="object-cover"
+                priority
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
             </div>
           </div>
         </div>
