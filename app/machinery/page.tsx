@@ -3,8 +3,24 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Link from "next/link";
 
+const LocationBasedBanner = () => (
+  <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white py-6 px-4">
+    <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+      <div>
+        <h3 className="text-lg font-bold">Try Our New Feature!</h3>
+        <p className="text-purple-100">Location-based machinery rental with GPS detection</p>
+      </div>
+      <Link href="/machinery-rental" className="bg-white hover:bg-gray-100 text-purple-600 px-6 py-2 rounded-lg font-semibold transition">
+        View Nearby Machinery
+      </Link>
+    </div>
+  </div>
+);
+
 export default function Machinery() {
   const machines = [
+    // This is the old machinery page - kept for reference
+    // The new location-based rental system is at /machinery-rental
     {
       name: "Tractor (35 HP)",
       price: "₹800/day",
@@ -58,6 +74,9 @@ export default function Machinery() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
+
+      {/* Location-Based Banner */}
+      <LocationBasedBanner />
 
       {/* Hero Section */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-blue-600 to-blue-400 text-white">

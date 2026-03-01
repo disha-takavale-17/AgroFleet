@@ -19,7 +19,7 @@ export default function Navbar() {
             <Link href="/" className="text-gray-700 hover:text-green-600 font-medium transition">
               Home
             </Link>
-            <Link href="/machinery" className="text-gray-700 hover:text-green-600 font-medium transition">
+            <Link href="/machinery-rental" className="text-gray-700 hover:text-green-600 font-medium transition">
               Machinery
             </Link>
             <Link href="/schemes" className="text-gray-700 hover:text-green-600 font-medium transition">

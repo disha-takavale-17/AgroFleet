@@ -32,8 +32,8 @@ export default function Home() {
 
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link href="/machinery" className="bg-white hover:bg-gray-100 text-green-600 px-8 py-4 rounded-lg font-semibold text-lg flex items-center justify-center gap-2 transition transform hover:scale-105">
-                  Explore Machinery
+                <Link href="/machinery-rental" className="bg-white hover:bg-gray-100 text-green-600 px-8 py-4 rounded-lg font-semibold text-lg flex items-center justify-center gap-2 transition transform hover:scale-105">
+                  Explore Machinery (Location-Based)
                   <ChevronRight className="w-5 h-5" />
                 </Link>
                 <Link href="/fertilizer" className="border-2 border-white text-white hover:bg-white/10 px-8 py-4 rounded-lg font-semibold text-lg transition">
@@ -86,7 +86,7 @@ export default function Home() {
           {/* Feature Cards */}
           <div className="grid md:grid-cols-3 gap-8">
             {/* Machinery Rental */}
-            <Link href="/machinery" className="group">
+            <Link href="/machinery-rental" className="group">
               <div className="p-8 rounded-2xl bg-gradient-to-br from-blue-50 to-blue-100 hover:shadow-xl transition transform hover:scale-105 cursor-pointer h-full">
                 <div className="w-14 h-14 rounded-lg bg-gradient-to-br from-blue-600 to-blue-400 flex items-center justify-center mb-4 group-hover:scale-110 transition">
                   <Tractor className="w-7 h-7 text-white" />
