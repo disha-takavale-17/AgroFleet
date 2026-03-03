@@ -29,8 +29,7 @@ export default function MachineryRental() {
 
           <div className="grid md:grid-cols-2 gap-8">
             {/* Farmer Role */}
-            <div 
-              onClick={() => setUserRole('farmer')}
+            <div
               className="group cursor-pointer bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105"
             >
               <div className="text-6xl mb-6 text-center">👨‍🌾</div>
@@ -54,14 +53,13 @@ export default function MachineryRental() {
                   24/7 support
                 </li>
               </ul>
-              <button className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-3 rounded-full hover:shadow-lg transition">
+              <button onClick={() => setUserRole('farmer')} className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-3 rounded-full hover:shadow-lg transition">
                 Continue as Farmer
               </button>
             </div>
 
             {/* Owner Role */}
-            <div 
-              onClick={() => setUserRole('owner')}
+            <div
               className="group cursor-pointer bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105"
             >
               <div className="text-6xl mb-6 text-center">🏭</div>
@@ -85,7 +83,7 @@ export default function MachineryRental() {
                   Premium support
                 </li>
               </ul>
-              <button className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-3 rounded-full hover:shadow-lg transition">
+              <button onClick={() => setUserRole('owner')} className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-3 rounded-full hover:shadow-lg transition">
                 Continue as Owner
               </button>
             </div>
