@@ -3,11 +3,10 @@
 import { useState } from 'react';
 
 export default function MachineryRental() {
-  const [userRole, setUserRole] = useState<'role-select' | 'farmer' | 'owner'>('role-select');
+  const [userRole, setUserRole] = useState<'role-select' | 'farmer' | 'owner' | null>('role-select');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [activeTab, setActiveTab] = useState<'browse' | 'bookings' | 'dashboard'>('browse');
   const [selectedMachine, setSelectedMachine] = useState(null);
-  const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   const farmersData = [
     { icon: '🚜', name: 'Tractor', category: 'Ploughing', price: '₹1,500/day', location: 'Nashik, MH', owner: 'Rajesh P.', availability: 'Available', image: '🚜', rating: 4.8, distance: '2.5 km' },
@@ -18,6 +17,7 @@ export default function MachineryRental() {
     { icon: '🚜', name: 'Mini Tractor', category: 'Ploughing', price: '₹900/day', location: 'Parbhani, MH', owner: 'Ramesh N.', availability: 'Available', image: '🚜', rating: 4.8, distance: '4.3 km' }
   ];
 
+  // Role Selection Screen
   if (userRole === 'role-select') {
     return (
       <div className="w-full min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-gray-900 flex items-center justify-center p-6">
@@ -29,9 +29,7 @@ export default function MachineryRental() {
 
           <div className="grid md:grid-cols-2 gap-8">
             {/* Farmer Role */}
-            <div
-              className="group cursor-pointer bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105"
-            >
+            <div className="bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
               <div className="text-6xl mb-6 text-center">👨‍🌾</div>
               <h2 className="text-3xl font-bold text-gray-900 mb-4 text-center">Farmer</h2>
               <p className="text-gray-600 text-center mb-6 leading-relaxed">Rent quality machinery for your farm operations at affordable rates</p>
@@ -53,15 +51,16 @@ export default function MachineryRental() {
                   24/7 support
                 </li>
               </ul>
-              <button onClick={() => setUserRole('farmer')} className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-3 rounded-full hover:shadow-lg transition">
+              <button 
+                onClick={() => setUserRole('farmer')}
+                className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-3 rounded-full hover:shadow-lg transition"
+              >
                 Continue as Farmer
               </button>
             </div>
 
             {/* Owner Role */}
-            <div
-              className="group cursor-pointer bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105"
-            >
+            <div className="bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
               <div className="text-6xl mb-6 text-center">🏭</div>
               <h2 className="text-3xl font-bold text-gray-900 mb-4 text-center">Owner / Hub</h2>
               <p className="text-gray-600 text-center mb-6 leading-relaxed">Earn passive income by renting your farming machinery on AgroFleet</p>
@@ -83,7 +82,10 @@ export default function MachineryRental() {
                   Premium support
                 </li>
               </ul>
-              <button onClick={() => setUserRole('owner')} className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-3 rounded-full hover:shadow-lg transition">
+              <button 
+                onClick={() => setUserRole('owner')}
+                className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-3 rounded-full hover:shadow-lg transition"
+              >
                 Continue as Owner
               </button>
             </div>
@@ -93,13 +95,14 @@ export default function MachineryRental() {
     );
   }
 
-  if (!isLoggedIn) {
+  // Login Screen
+  if (!isLoggedIn && (userRole === 'farmer' || userRole === 'owner')) {
     return (
       <div className="w-full min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-gray-900 flex items-center justify-center p-6">
         <div className="max-w-md w-full bg-white rounded-2xl p-8 shadow-2xl">
           <button 
             onClick={() => setUserRole('role-select')}
-            className="text-gray-600 hover:text-gray-900 mb-6 flex items-center gap-2"
+            className="text-gray-600 hover:text-gray-900 mb-6 flex items-center gap-2 font-semibold"
           >
             ← Back to Role Selection
           </button>
@@ -110,8 +113,16 @@ export default function MachineryRental() {
           <p className="text-gray-600 mb-8">Sign in to your account</p>
 
           <div className="space-y-4 mb-6">
-            <input type="email" placeholder="Email address" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200" />
-            <input type="password" placeholder="Password" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200" />
+            <input 
+              type="email" 
+              placeholder="Email address" 
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200" 
+            />
+            <input 
+              type="password" 
+              placeholder="Password" 
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200" 
+            />
           </div>
 
           <button 
@@ -130,7 +141,7 @@ export default function MachineryRental() {
   }
 
   // Farmer Dashboard
-  if (userRole === 'farmer') {
+  if (userRole === 'farmer' && isLoggedIn) {
     return (
       <div className="w-full min-h-screen bg-gray-50">
         {/* Header */}
@@ -183,7 +194,6 @@ export default function MachineryRental() {
                     <p className="text-green-600 font-semibold mt-3">Found 12 machines nearby</p>
                   </div>
                 </div>
-                {/* Map pins simulation */}
                 <div className="absolute top-1/4 left-1/3 w-8 h-8 bg-red-500 rounded-full border-2 border-white shadow-lg"></div>
                 <div className="absolute top-1/3 right-1/4 w-6 h-6 bg-green-500 rounded-full border-2 border-white shadow-lg"></div>
                 <div className="absolute bottom-1/4 left-1/2 w-6 h-6 bg-blue-500 rounded-full border-2 border-white shadow-lg"></div>
@@ -215,7 +225,6 @@ export default function MachineryRental() {
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {farmersData.map((machine, index) => (
                   <div key={index} className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all border border-gray-100">
-                    {/* Machine Image */}
                     <div className="bg-gradient-to-br from-green-100 to-green-50 h-48 flex items-center justify-center text-7xl relative">
                       {machine.image}
                       <span className="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">{machine.availability}</span>
@@ -248,18 +257,13 @@ export default function MachineryRental() {
                         </div>
                       </div>
 
-                      {/* Calendar Preview */}
                       <div className="mb-6 p-4 bg-green-50 rounded-lg text-sm">
                         <p className="font-semibold text-gray-900 mb-2">📅 Availability</p>
                         <p className="text-green-700">Available: Mon, Tue, Thu, Fri, Sat</p>
                       </div>
 
-                      {/* Buttons */}
                       <div className="flex gap-3">
-                        <button 
-                          onClick={() => { setSelectedMachine(machine); setShowPaymentModal(true); }}
-                          className="flex-1 bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-2 rounded-lg hover:shadow-lg transition"
-                        >
+                        <button className="flex-1 bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-2 rounded-lg hover:shadow-lg transition">
                           Book Now
                         </button>
                         <button className="flex-1 border-2 border-green-500 text-green-600 font-bold py-2 rounded-lg hover:bg-green-50 transition">
@@ -267,7 +271,6 @@ export default function MachineryRental() {
                         </button>
                       </div>
 
-                      {/* Communication Options */}
                       <div className="mt-4 flex gap-2">
                         <button className="flex-1 text-sm bg-blue-50 text-blue-600 py-2 rounded-lg hover:bg-blue-100 transition font-semibold">💬 Chat</button>
                         <button className="flex-1 text-sm bg-orange-50 text-orange-600 py-2 rounded-lg hover:bg-orange-100 transition font-semibold">📞 Call</button>
@@ -284,7 +287,6 @@ export default function MachineryRental() {
           <div className="max-w-7xl mx-auto px-6 py-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-8">My Bookings & Usage Tracking</h2>
 
-            {/* Active Booking Card */}
             <div className="bg-white rounded-2xl p-8 shadow-lg mb-8 border-l-4 border-blue-500">
               <div className="grid md:grid-cols-3 gap-8">
                 <div>
@@ -323,7 +325,6 @@ export default function MachineryRental() {
                 </div>
               </div>
 
-              {/* Photo Upload Section */}
               <div className="mt-8 pt-8 border-t border-gray-200">
                 <h4 className="font-bold text-gray-900 mb-4">Before & After Photos</h4>
                 <div className="grid md:grid-cols-2 gap-4">
@@ -338,7 +339,6 @@ export default function MachineryRental() {
                 </div>
               </div>
 
-              {/* Action Buttons */}
               <div className="mt-8 flex gap-4">
                 <button className="px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white font-bold rounded-lg hover:shadow-lg transition">
                   Mark as Completed
@@ -349,7 +349,6 @@ export default function MachineryRental() {
               </div>
             </div>
 
-            {/* AI Alerts */}
             <h3 className="text-2xl font-bold text-gray-900 mb-6">AI Monitoring Alerts</h3>
             <div className="grid md:grid-cols-3 gap-6 mb-8">
               <div className="bg-orange-50 border border-orange-200 rounded-xl p-6">
@@ -366,7 +365,6 @@ export default function MachineryRental() {
               </div>
             </div>
 
-            {/* Past Bookings */}
             <h3 className="text-2xl font-bold text-gray-900 mb-6">Past Bookings</h3>
             <div className="bg-white rounded-xl p-6 shadow">
               <div className="space-y-4">
@@ -389,7 +387,7 @@ export default function MachineryRental() {
   }
 
   // Owner Dashboard
-  if (userRole === 'owner') {
+  if (userRole === 'owner' && isLoggedIn) {
     return (
       <div className="w-full min-h-screen bg-gray-50">
         {/* Header */}
@@ -567,4 +565,7 @@ export default function MachineryRental() {
       </div>
     );
   }
+
+  // Fallback
+  return <div className="text-center py-20">Loading...</div>;
 }
