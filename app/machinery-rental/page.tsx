@@ -2,23 +2,49 @@
 
 import { useState } from 'react';
 
+type Step = 'role-select' | 'login' | 'farmer-dashboard' | 'owner-dashboard';
+type Role = 'farmer' | 'owner' | null;
+
 export default function MachineryRental() {
-  const [userRole, setUserRole] = useState<'role-select' | 'farmer' | 'owner' | null>('role-select');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [activeTab, setActiveTab] = useState<'browse' | 'bookings' | 'dashboard'>('browse');
-  const [selectedMachine, setSelectedMachine] = useState(null);
+  const [step, setStep] = useState<Step>('role-select');
+  const [role, setRole] = useState<Role>(null);
+  const [activeTab, setActiveTab] = useState('browse');
+
+  const handleRoleSelect = (selectedRole: Role) => {
+    setRole(selectedRole);
+    setStep('login');
+  };
+
+  const handleLogin = () => {
+    if (role === 'farmer') {
+      setStep('farmer-dashboard');
+    } else if (role === 'owner') {
+      setStep('owner-dashboard');
+    }
+  };
+
+  const handleLogout = () => {
+    setRole(null);
+    setStep('role-select');
+    setActiveTab('browse');
+  };
+
+  const handleBackToRoles = () => {
+    setRole(null);
+    setStep('role-select');
+  };
 
   const farmersData = [
-    { icon: '🚜', name: 'Tractor', category: 'Ploughing', price: '₹1,500/day', location: 'Nashik, MH', owner: 'Rajesh P.', availability: 'Available', image: '🚜', rating: 4.8, distance: '2.5 km' },
-    { icon: '🌾', name: 'Combine Harvester', category: 'Harvesting', price: '₹5,000/day', location: 'Aurangabad, MH', owner: 'Vikram S.', availability: 'Available', image: '🌾', rating: 4.9, distance: '5.2 km' },
-    { icon: '🔄', name: 'Rotavator', category: 'Soil Preparation', price: '₹1,200/day', location: 'Parbhani, MH', owner: 'Priya M.', availability: 'Available', image: '🔄', rating: 4.7, distance: '3.8 km' },
-    { icon: '🌱', name: 'Seeder Machine', category: 'Sowing', price: '₹800/day', location: 'Nashik, MH', owner: 'Arjun K.', availability: 'Available', image: '🌱', rating: 4.6, distance: '1.9 km' },
-    { icon: '💨', name: 'Sprayer', category: 'Pest Control', price: '₹600/day', location: 'Aurangabad, MH', owner: 'Sanjay R.', availability: 'Available', image: '💨', rating: 4.5, distance: '6.1 km' },
-    { icon: '🚜', name: 'Mini Tractor', category: 'Ploughing', price: '₹900/day', location: 'Parbhani, MH', owner: 'Ramesh N.', availability: 'Available', image: '🚜', rating: 4.8, distance: '4.3 km' }
+    { icon: '🚜', name: 'Tractor', category: 'Ploughing', price: '₹1,500/day', location: 'Nashik, MH', owner: 'Rajesh P.', availability: 'Available', rating: 4.8, distance: '2.5 km' },
+    { icon: '🌾', name: 'Combine Harvester', category: 'Harvesting', price: '₹5,000/day', location: 'Aurangabad, MH', owner: 'Vikram S.', availability: 'Available', rating: 4.9, distance: '5.2 km' },
+    { icon: '🔄', name: 'Rotavator', category: 'Soil Preparation', price: '₹1,200/day', location: 'Parbhani, MH', owner: 'Priya M.', availability: 'Available', rating: 4.7, distance: '3.8 km' },
+    { icon: '🌱', name: 'Seeder Machine', category: 'Sowing', price: '₹800/day', location: 'Nashik, MH', owner: 'Arjun K.', availability: 'Available', rating: 4.6, distance: '1.9 km' },
+    { icon: '💨', name: 'Sprayer', category: 'Pest Control', price: '₹600/day', location: 'Aurangabad, MH', owner: 'Sanjay R.', availability: 'Available', rating: 4.5, distance: '6.1 km' },
+    { icon: '🚜', name: 'Mini Tractor', category: 'Ploughing', price: '₹900/day', location: 'Parbhani, MH', owner: 'Ramesh N.', availability: 'Available', rating: 4.8, distance: '4.3 km' }
   ];
 
-  // Role Selection Screen
-  if (userRole === 'role-select') {
+  // STEP 1: ROLE SELECTION
+  if (step === 'role-select') {
     return (
       <div className="w-full min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-gray-900 flex items-center justify-center p-6">
         <div className="max-w-2xl w-full">
@@ -28,7 +54,7 @@ export default function MachineryRental() {
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">
-            {/* Farmer Role */}
+            {/* Farmer Card */}
             <div className="bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
               <div className="text-6xl mb-6 text-center">👨‍🌾</div>
               <h2 className="text-3xl font-bold text-gray-900 mb-4 text-center">Farmer</h2>
@@ -52,14 +78,14 @@ export default function MachineryRental() {
                 </li>
               </ul>
               <button 
-                onClick={() => setUserRole('farmer')}
+                onClick={() => handleRoleSelect('farmer')}
                 className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-3 rounded-full hover:shadow-lg transition"
               >
                 Continue as Farmer
               </button>
             </div>
 
-            {/* Owner Role */}
+            {/* Owner Card */}
             <div className="bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
               <div className="text-6xl mb-6 text-center">🏭</div>
               <h2 className="text-3xl font-bold text-gray-900 mb-4 text-center">Owner / Hub</h2>
@@ -83,7 +109,7 @@ export default function MachineryRental() {
                 </li>
               </ul>
               <button 
-                onClick={() => setUserRole('owner')}
+                onClick={() => handleRoleSelect('owner')}
                 className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-3 rounded-full hover:shadow-lg transition"
               >
                 Continue as Owner
@@ -95,20 +121,20 @@ export default function MachineryRental() {
     );
   }
 
-  // Login Screen
-  if (!isLoggedIn && (userRole === 'farmer' || userRole === 'owner')) {
+  // STEP 2: LOGIN
+  if (step === 'login') {
     return (
       <div className="w-full min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-gray-900 flex items-center justify-center p-6">
         <div className="max-w-md w-full bg-white rounded-2xl p-8 shadow-2xl">
           <button 
-            onClick={() => setUserRole('role-select')}
+            onClick={handleBackToRoles}
             className="text-gray-600 hover:text-gray-900 mb-6 flex items-center gap-2 font-semibold"
           >
             ← Back to Role Selection
           </button>
 
           <h2 className="text-3xl font-bold text-gray-900 mb-2">
-            {userRole === 'farmer' ? 'Farmer' : 'Owner'} Login
+            {role === 'farmer' ? 'Farmer' : 'Owner'} Login
           </h2>
           <p className="text-gray-600 mb-8">Sign in to your account</p>
 
@@ -126,7 +152,7 @@ export default function MachineryRental() {
           </div>
 
           <button 
-            onClick={() => setIsLoggedIn(true)}
+            onClick={handleLogin}
             className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-3 rounded-lg hover:shadow-lg transition mb-4"
           >
             Sign In
@@ -140,20 +166,18 @@ export default function MachineryRental() {
     );
   }
 
-  // Farmer Dashboard
-  if (userRole === 'farmer' && isLoggedIn) {
+  // STEP 3: FARMER DASHBOARD
+  if (step === 'farmer-dashboard') {
     return (
       <div className="w-full min-h-screen bg-gray-50">
         {/* Header */}
         <header className="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
           <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent">AgroFleet</h1>
-            </div>
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent">AgroFleet</h1>
             <div className="flex items-center gap-4">
               <button className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition">Profile</button>
               <button 
-                onClick={() => { setIsLoggedIn(false); setUserRole('role-select'); }}
+                onClick={handleLogout}
                 className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
               >
                 Logout
@@ -162,7 +186,7 @@ export default function MachineryRental() {
           </div>
         </header>
 
-        {/* Tab Navigation */}
+        {/* Tabs */}
         <div className="bg-white border-b border-gray-200">
           <div className="max-w-7xl mx-auto px-6 flex gap-8">
             <button 
@@ -180,114 +204,108 @@ export default function MachineryRental() {
           </div>
         </div>
 
+        {/* Browse Tab */}
         {activeTab === 'browse' && (
           <div className="max-w-7xl mx-auto px-6 py-12">
-            {/* Map Section */}
-            <div className="mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">Find Nearby Machinery</h2>
-              <div className="bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl h-96 flex items-center justify-center border-2 border-gray-300 relative overflow-hidden">
-                <div className="absolute inset-0 flex items-center justify-center text-gray-700">
-                  <div className="text-center">
-                    <div className="text-6xl mb-4">🗺️</div>
-                    <p className="text-xl font-semibold">Interactive Map View</p>
-                    <p className="text-gray-600 mt-2">📍 Your Location: Nashik, Maharashtra</p>
-                    <p className="text-green-600 font-semibold mt-3">Found 12 machines nearby</p>
-                  </div>
-                </div>
-                <div className="absolute top-1/4 left-1/3 w-8 h-8 bg-red-500 rounded-full border-2 border-white shadow-lg"></div>
-                <div className="absolute top-1/3 right-1/4 w-6 h-6 bg-green-500 rounded-full border-2 border-white shadow-lg"></div>
-                <div className="absolute bottom-1/4 left-1/2 w-6 h-6 bg-blue-500 rounded-full border-2 border-white shadow-lg"></div>
-              </div>
-
-              {/* Search and Filters */}
-              <div className="grid md:grid-cols-2 gap-4 mt-6">
-                <input 
-                  type="text" 
-                  placeholder="Search by location..." 
-                  className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-                />
-                <div className="flex gap-2">
-                  {['Tractor', 'Harvester', 'Seeder', 'Rotavator'].map((filter) => (
-                    <button 
-                      key={filter}
-                      className="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-green-50 hover:border-green-500 transition text-sm font-medium"
-                    >
-                      {filter}
-                    </button>
-                  ))}
-                </div>
+            <h2 className="text-3xl font-bold text-gray-900 mb-6">Find Nearby Machinery</h2>
+            
+            {/* Map */}
+            <div className="bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl h-96 flex items-center justify-center border-2 border-gray-300 mb-12">
+              <div className="text-center">
+                <div className="text-6xl mb-4">🗺️</div>
+                <p className="text-xl font-semibold text-gray-700">Interactive Map View</p>
+                <p className="text-gray-600 mt-2">📍 Your Location: Nashik, Maharashtra</p>
+                <p className="text-green-600 font-semibold mt-3">Found 12 machines nearby</p>
               </div>
             </div>
 
-            {/* Machinery Grid */}
-            <div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-8">Nearby Machines Based on Your Location</h2>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {farmersData.map((machine, index) => (
-                  <div key={index} className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all border border-gray-100">
-                    <div className="bg-gradient-to-br from-green-100 to-green-50 h-48 flex items-center justify-center text-7xl relative">
-                      {machine.image}
-                      <span className="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">{machine.availability}</span>
-                    </div>
-
-                    <div className="p-6">
-                      <h3 className="text-2xl font-bold text-gray-900 mb-2">{machine.name}</h3>
-                      <p className="text-gray-600 text-sm mb-4">{machine.category}</p>
-
-                      <div className="space-y-3 mb-6">
-                        <div className="flex items-center justify-between">
-                          <span className="text-gray-700">💰 Rental Price</span>
-                          <span className="font-bold text-green-600 text-lg">{machine.price}</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-gray-700">📍 Location</span>
-                          <span className="font-semibold text-gray-900">{machine.location}</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-gray-700">🚗 Distance</span>
-                          <span className="font-semibold text-gray-900">{machine.distance}</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-gray-700">⭐ Rating</span>
-                          <span className="font-bold text-yellow-500">{machine.rating}/5</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-gray-700">Owner</span>
-                          <span className="font-semibold text-gray-900">{machine.owner}</span>
-                        </div>
-                      </div>
-
-                      <div className="mb-6 p-4 bg-green-50 rounded-lg text-sm">
-                        <p className="font-semibold text-gray-900 mb-2">📅 Availability</p>
-                        <p className="text-green-700">Available: Mon, Tue, Thu, Fri, Sat</p>
-                      </div>
-
-                      <div className="flex gap-3">
-                        <button className="flex-1 bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-2 rounded-lg hover:shadow-lg transition">
-                          Book Now
-                        </button>
-                        <button className="flex-1 border-2 border-green-500 text-green-600 font-bold py-2 rounded-lg hover:bg-green-50 transition">
-                          Compare
-                        </button>
-                      </div>
-
-                      <div className="mt-4 flex gap-2">
-                        <button className="flex-1 text-sm bg-blue-50 text-blue-600 py-2 rounded-lg hover:bg-blue-100 transition font-semibold">💬 Chat</button>
-                        <button className="flex-1 text-sm bg-orange-50 text-orange-600 py-2 rounded-lg hover:bg-orange-100 transition font-semibold">📞 Call</button>
-                      </div>
-                    </div>
-                  </div>
+            {/* Filters */}
+            <div className="grid md:grid-cols-2 gap-4 mb-12">
+              <input 
+                type="text" 
+                placeholder="Search by location..." 
+                className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+              <div className="flex gap-2">
+                {['Tractor', 'Harvester', 'Seeder', 'Rotavator'].map((filter) => (
+                  <button 
+                    key={filter}
+                    className="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-green-50 hover:border-green-500 transition text-sm font-medium"
+                  >
+                    {filter}
+                  </button>
                 ))}
               </div>
+            </div>
+
+            {/* Machinery Cards */}
+            <h2 className="text-3xl font-bold text-gray-900 mb-8">Nearby Machines</h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {farmersData.map((machine, index) => (
+                <div key={index} className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all border border-gray-100">
+                  <div className="bg-gradient-to-br from-green-100 to-green-50 h-48 flex items-center justify-center text-7xl relative">
+                    {machine.icon}
+                    <span className="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">{machine.availability}</span>
+                  </div>
+
+                  <div className="p-6">
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2">{machine.name}</h3>
+                    <p className="text-gray-600 text-sm mb-4">{machine.category}</p>
+
+                    <div className="space-y-3 mb-6">
+                      <div className="flex items-center justify-between">
+                        <span className="text-gray-700">💰 Price</span>
+                        <span className="font-bold text-green-600 text-lg">{machine.price}</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-gray-700">📍 Location</span>
+                        <span className="font-semibold text-gray-900">{machine.location}</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-gray-700">🚗 Distance</span>
+                        <span className="font-semibold text-gray-900">{machine.distance}</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-gray-700">⭐ Rating</span>
+                        <span className="font-bold text-yellow-500">{machine.rating}/5</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-gray-700">Owner</span>
+                        <span className="font-semibold text-gray-900">{machine.owner}</span>
+                      </div>
+                    </div>
+
+                    <div className="mb-6 p-4 bg-green-50 rounded-lg text-sm">
+                      <p className="font-semibold text-gray-900 mb-2">📅 Availability</p>
+                      <p className="text-green-700">Mon, Tue, Thu, Fri, Sat</p>
+                    </div>
+
+                    <div className="flex gap-3 mb-4">
+                      <button className="flex-1 bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-2 rounded-lg hover:shadow-lg transition">
+                        Book Now
+                      </button>
+                      <button className="flex-1 border-2 border-green-500 text-green-600 font-bold py-2 rounded-lg hover:bg-green-50 transition">
+                        Compare
+                      </button>
+                    </div>
+
+                    <div className="flex gap-2">
+                      <button className="flex-1 text-sm bg-blue-50 text-blue-600 py-2 rounded-lg hover:bg-blue-100 transition font-semibold">💬 Chat</button>
+                      <button className="flex-1 text-sm bg-orange-50 text-orange-600 py-2 rounded-lg hover:bg-orange-100 transition font-semibold">📞 Call</button>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         )}
 
+        {/* Bookings Tab */}
         {activeTab === 'bookings' && (
           <div className="max-w-7xl mx-auto px-6 py-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-8">My Bookings & Usage Tracking</h2>
 
-            <div className="bg-white rounded-2xl p-8 shadow-lg mb-8 border-l-4 border-blue-500">
+            <div className="bg-white rounded-2xl p-8 shadow-lg border-l-4 border-blue-500">
               <div className="grid md:grid-cols-3 gap-8">
                 <div>
                   <h3 className="text-2xl font-bold text-gray-900 mb-4">🚜 Tractor Rental</h3>
@@ -312,29 +330,9 @@ export default function MachineryRental() {
                     <p className="font-semibold text-yellow-800">⚠️ AI Monitoring</p>
                     <p className="text-sm text-yellow-700 mt-2">Machine returned 2 hours late</p>
                   </div>
-
                   <div className="bg-green-50 p-4 rounded-lg border border-green-200">
                     <p className="font-semibold text-green-800">✓ Work Status</p>
                     <p className="text-sm text-green-700 mt-2">In Progress - 85% completed</p>
-                  </div>
-
-                  <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                    <p className="font-semibold text-blue-800">📸 Documentation</p>
-                    <p className="text-sm text-blue-700 mt-2">Upload before/after photos</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-8 pt-8 border-t border-gray-200">
-                <h4 className="font-bold text-gray-900 mb-4">Before & After Photos</h4>
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:bg-gray-50 transition cursor-pointer">
-                    <p className="text-2xl mb-2">📷</p>
-                    <p className="text-gray-700">Upload Before Photo</p>
-                  </div>
-                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:bg-gray-50 transition cursor-pointer">
-                    <p className="text-2xl mb-2">📷</p>
-                    <p className="text-gray-700">Upload After Photo</p>
                   </div>
                 </div>
               </div>
@@ -349,8 +347,8 @@ export default function MachineryRental() {
               </div>
             </div>
 
-            <h3 className="text-2xl font-bold text-gray-900 mb-6">AI Monitoring Alerts</h3>
-            <div className="grid md:grid-cols-3 gap-6 mb-8">
+            <h3 className="text-2xl font-bold text-gray-900 mt-12 mb-6">AI Monitoring Alerts</h3>
+            <div className="grid md:grid-cols-3 gap-6">
               <div className="bg-orange-50 border border-orange-200 rounded-xl p-6">
                 <p className="font-bold text-orange-800 mb-2">🚨 Late Arrival Warning</p>
                 <p className="text-sm text-orange-700">Pickup was delayed by 30 minutes</p>
@@ -364,42 +362,24 @@ export default function MachineryRental() {
                 <p className="text-sm text-green-700">Booking completed as promised</p>
               </div>
             </div>
-
-            <h3 className="text-2xl font-bold text-gray-900 mb-6">Past Bookings</h3>
-            <div className="bg-white rounded-xl p-6 shadow">
-              <div className="space-y-4">
-                <div className="flex items-center justify-between pb-4 border-b">
-                  <div>
-                    <p className="font-bold text-gray-900">🚜 Tractor - Rajesh P.</p>
-                    <p className="text-sm text-gray-600">Completed on Dec 15, 2024</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-bold text-green-600">₹1,500</p>
-                    <p className="text-sm text-yellow-500">⭐ 4.8/5</p>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         )}
       </div>
     );
   }
 
-  // Owner Dashboard
-  if (userRole === 'owner' && isLoggedIn) {
+  // STEP 4: OWNER DASHBOARD
+  if (step === 'owner-dashboard') {
     return (
       <div className="w-full min-h-screen bg-gray-50">
         {/* Header */}
         <header className="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
           <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent">AgroFleet - Owner Hub</h1>
-            </div>
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent">AgroFleet - Owner Hub</h1>
             <div className="flex items-center gap-4">
               <button className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition">Profile</button>
               <button 
-                onClick={() => { setIsLoggedIn(false); setUserRole('role-select'); }}
+                onClick={handleLogout}
                 className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
               >
                 Logout
@@ -409,7 +389,7 @@ export default function MachineryRental() {
         </header>
 
         <div className="max-w-7xl mx-auto px-6 py-12">
-          {/* Dashboard Overview */}
+          {/* Dashboard Stats */}
           <div className="grid md:grid-cols-4 gap-6 mb-12">
             <div className="bg-white rounded-xl p-6 shadow-lg">
               <p className="text-gray-600 text-sm font-semibold mb-2">Total Earnings</p>
@@ -452,7 +432,7 @@ export default function MachineryRental() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-2">Location (Village/City)</label>
+                  <label className="block text-gray-700 font-semibold mb-2">Location</label>
                   <input type="text" placeholder="Nashik, Maharashtra" className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500" />
                 </div>
               </div>
@@ -466,7 +446,7 @@ export default function MachineryRental() {
                   <label className="block text-gray-700 font-semibold mb-2">Machine Images</label>
                   <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:bg-gray-50 cursor-pointer transition">
                     <p className="text-2xl mb-2">📸</p>
-                    <p className="text-gray-700 font-semibold">Click to upload images</p>
+                    <p className="text-gray-700 font-semibold">Click to upload</p>
                   </div>
                 </div>
                 <div>
@@ -481,12 +461,12 @@ export default function MachineryRental() {
             </button>
           </div>
 
-          {/* My Machines List */}
+          {/* My Machines */}
           <h2 className="text-3xl font-bold text-gray-900 mb-8">My Machines</h2>
           <div className="grid md:grid-cols-2 gap-8 mb-12">
             {farmersData.slice(0, 4).map((machine, index) => (
               <div key={index} className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
-                <div className="bg-gradient-to-r from-green-100 to-green-50 h-32 flex items-center justify-center text-5xl">{machine.image}</div>
+                <div className="bg-gradient-to-r from-green-100 to-green-50 h-32 flex items-center justify-center text-5xl">{machine.icon}</div>
                 <div className="p-6">
                   <h3 className="text-xl font-bold text-gray-900 mb-2">{machine.name}</h3>
                   <div className="space-y-2 text-gray-700 mb-4">
@@ -508,64 +488,48 @@ export default function MachineryRental() {
           {/* Booking Requests */}
           <h2 className="text-3xl font-bold text-gray-900 mb-8">Booking Requests</h2>
           <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-gray-50 border-b">
-                  <tr>
-                    <th className="px-6 py-4 text-left font-semibold text-gray-700">Farmer</th>
-                    <th className="px-6 py-4 text-left font-semibold text-gray-700">Machine</th>
-                    <th className="px-6 py-4 text-left font-semibold text-gray-700">Dates</th>
-                    <th className="px-6 py-4 text-left font-semibold text-gray-700">Amount</th>
-                    <th className="px-6 py-4 text-left font-semibold text-gray-700">Status</th>
-                    <th className="px-6 py-4 text-left font-semibold text-gray-700">Action</th>
+            <table className="w-full">
+              <thead className="bg-gray-50 border-b">
+                <tr>
+                  <th className="px-6 py-4 text-left font-semibold text-gray-700">Farmer</th>
+                  <th className="px-6 py-4 text-left font-semibold text-gray-700">Machine</th>
+                  <th className="px-6 py-4 text-left font-semibold text-gray-700">Dates</th>
+                  <th className="px-6 py-4 text-left font-semibold text-gray-700">Amount</th>
+                  <th className="px-6 py-4 text-left font-semibold text-gray-700">Status</th>
+                  <th className="px-6 py-4 text-left font-semibold text-gray-700">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { farmer: 'Arjun Singh', machine: 'Tractor', dates: 'Dec 20-22', amount: '₹3,000', status: 'Pending' },
+                  { farmer: 'Priya Sharma', machine: 'Harvester', dates: 'Dec 23-25', amount: '₹15,000', status: 'Confirmed' },
+                  { farmer: 'Rajesh Kumar', machine: 'Rotavator', dates: 'Dec 26', amount: '₹1,200', status: 'Completed' }
+                ].map((req, idx) => (
+                  <tr key={idx} className="border-b hover:bg-gray-50">
+                    <td className="px-6 py-4 text-gray-900 font-semibold">{req.farmer}</td>
+                    <td className="px-6 py-4 text-gray-700">{req.machine}</td>
+                    <td className="px-6 py-4 text-gray-700">{req.dates}</td>
+                    <td className="px-6 py-4 text-green-600 font-bold">{req.amount}</td>
+                    <td className="px-6 py-4">
+                      <span className={`px-3 py-1 rounded-full text-sm font-semibold ${req.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' : req.status === 'Confirmed' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'}`}>
+                        {req.status}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex gap-2">
+                        <button className="px-3 py-1 bg-green-500 text-white text-sm rounded-lg hover:bg-green-600">Accept</button>
+                        <button className="px-3 py-1 bg-red-500 text-white text-sm rounded-lg hover:bg-red-600">Reject</button>
+                      </div>
+                    </td>
                   </tr>
-                </thead>
-                <tbody>
-                  {[
-                    { farmer: 'Arjun Singh', machine: 'Tractor', dates: 'Dec 20-22', amount: '₹3,000', status: 'Pending' },
-                    { farmer: 'Priya Sharma', machine: 'Harvester', dates: 'Dec 23-25', amount: '₹15,000', status: 'Confirmed' },
-                    { farmer: 'Rajesh Kumar', machine: 'Rotavator', dates: 'Dec 26', amount: '₹1,200', status: 'Completed' }
-                  ].map((req, idx) => (
-                    <tr key={idx} className="border-b hover:bg-gray-50">
-                      <td className="px-6 py-4 text-gray-900 font-semibold">{req.farmer}</td>
-                      <td className="px-6 py-4 text-gray-700">{req.machine}</td>
-                      <td className="px-6 py-4 text-gray-700">{req.dates}</td>
-                      <td className="px-6 py-4 text-green-600 font-bold">{req.amount}</td>
-                      <td className="px-6 py-4">
-                        <span className={`px-3 py-1 rounded-full text-sm font-semibold ${req.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' : req.status === 'Confirmed' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'}`}>
-                          {req.status}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="flex gap-2">
-                          <button className="px-3 py-1 bg-green-500 text-white text-sm rounded-lg hover:bg-green-600">Accept</button>
-                          <button className="px-3 py-1 bg-red-500 text-white text-sm rounded-lg hover:bg-red-600">Reject</button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          {/* Maintenance Status */}
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-8">Machine Maintenance Status</h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="bg-white rounded-xl p-6 shadow-lg border-l-4 border-green-500">
-              <h3 className="font-bold text-gray-900 mb-4">✓ Well Maintained</h3>
-              <p className="text-gray-600">🚜 Tractor - Next service: Jan 15, 2025</p>
-            </div>
-            <div className="bg-white rounded-xl p-6 shadow-lg border-l-4 border-yellow-500">
-              <h3 className="font-bold text-gray-900 mb-4">⚠️ Needs Attention</h3>
-              <p className="text-gray-600">🌾 Harvester - Schedule maintenance</p>
-            </div>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
     );
   }
 
-  // Fallback
-  return <div className="text-center py-20">Loading...</div>;
+  return null;
 }
