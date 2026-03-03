@@ -2,36 +2,15 @@
 
 import { useState } from 'react';
 
-type Step = 'role-select' | 'login' | 'farmer-dashboard' | 'owner-dashboard';
-type Role = 'farmer' | 'owner' | null;
+type Step = 'landing' | 'farmer-login' | 'owner-login' | 'farmer-dashboard' | 'owner-dashboard';
 
 export default function MachineryRental() {
-  const [step, setStep] = useState<Step>('role-select');
-  const [role, setRole] = useState<Role>(null);
+  const [step, setStep] = useState<Step>('landing');
   const [activeTab, setActiveTab] = useState('browse');
 
-  const handleRoleSelect = (selectedRole: Role) => {
-    setRole(selectedRole);
-    setStep('login');
-  };
-
-  const handleLogin = () => {
-    if (role === 'farmer') {
-      setStep('farmer-dashboard');
-    } else if (role === 'owner') {
-      setStep('owner-dashboard');
-    }
-  };
-
   const handleLogout = () => {
-    setRole(null);
-    setStep('role-select');
+    setStep('landing');
     setActiveTab('browse');
-  };
-
-  const handleBackToRoles = () => {
-    setRole(null);
-    setStep('role-select');
   };
 
   const farmersData = [
@@ -43,100 +22,164 @@ export default function MachineryRental() {
     { icon: '🚜', name: 'Mini Tractor', category: 'Ploughing', price: '₹900/day', location: 'Parbhani, MH', owner: 'Ramesh N.', availability: 'Available', rating: 4.8, distance: '4.3 km' }
   ];
 
-  // STEP 1: ROLE SELECTION
-  if (step === 'role-select') {
+  // LANDING PAGE
+  if (step === 'landing') {
     return (
-      <div className="w-full min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-gray-900 flex items-center justify-center p-6">
-        <div className="max-w-2xl w-full">
-          <div className="text-center mb-16">
-            <h1 className="text-5xl font-bold text-white mb-4">Welcome to AgroFleet</h1>
-            <p className="text-xl text-gray-200">Choose your role to get started</p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-8">
-            {/* Farmer Card */}
-            <div className="bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
-              <div className="text-6xl mb-6 text-center">👨‍🌾</div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-4 text-center">Farmer</h2>
-              <p className="text-gray-600 text-center mb-6 leading-relaxed">Rent quality machinery for your farm operations at affordable rates</p>
-              <ul className="space-y-3 text-gray-700 mb-8">
-                <li className="flex items-center gap-3">
-                  <span className="text-green-600 font-bold">✓</span>
-                  Browse nearby machines
-                </li>
-                <li className="flex items-center gap-3">
-                  <span className="text-green-600 font-bold">✓</span>
-                  Easy booking system
-                </li>
-                <li className="flex items-center gap-3">
-                  <span className="text-green-600 font-bold">✓</span>
-                  Secure payment
-                </li>
-                <li className="flex items-center gap-3">
-                  <span className="text-green-600 font-bold">✓</span>
-                  24/7 support
-                </li>
-              </ul>
+      <div className="w-full min-h-screen bg-gray-50">
+        {/* Top Navigation */}
+        <nav className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
+          <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent">AgroFleet</h1>
+            <div className="flex items-center gap-4">
               <button 
-                onClick={() => handleRoleSelect('farmer')}
-                className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-3 rounded-full hover:shadow-lg transition"
+                onClick={() => setStep('farmer-login')}
+                className="px-6 py-2 text-green-600 font-semibold hover:bg-green-50 rounded-lg transition"
               >
-                Continue as Farmer
+                Log in as Farmer
               </button>
-            </div>
-
-            {/* Owner Card */}
-            <div className="bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
-              <div className="text-6xl mb-6 text-center">🏭</div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-4 text-center">Owner / Hub</h2>
-              <p className="text-gray-600 text-center mb-6 leading-relaxed">Earn passive income by renting your farming machinery on AgroFleet</p>
-              <ul className="space-y-3 text-gray-700 mb-8">
-                <li className="flex items-center gap-3">
-                  <span className="text-green-600 font-bold">✓</span>
-                  List your machinery
-                </li>
-                <li className="flex items-center gap-3">
-                  <span className="text-green-600 font-bold">✓</span>
-                  Secure bookings
-                </li>
-                <li className="flex items-center gap-3">
-                  <span className="text-green-600 font-bold">✓</span>
-                  Track earnings
-                </li>
-                <li className="flex items-center gap-3">
-                  <span className="text-green-600 font-bold">✓</span>
-                  Premium support
-                </li>
-              </ul>
               <button 
-                onClick={() => handleRoleSelect('owner')}
-                className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-3 rounded-full hover:shadow-lg transition"
+                onClick={() => setStep('owner-login')}
+                className="px-6 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition"
               >
-                Continue as Owner
+                Log in as Owner
               </button>
             </div>
           </div>
-        </div>
+        </nav>
+
+        {/* Hero Section */}
+        <section className="bg-gradient-to-br from-gray-900 via-green-900 to-gray-900 py-20 md:py-32 text-white">
+          <div className="max-w-6xl mx-auto px-6 text-center">
+            <h1 className="text-5xl md:text-6xl font-bold mb-6">Smart Machinery Rental Platform</h1>
+            <p className="text-xl text-gray-200 mb-12 max-w-2xl mx-auto">Rent farm equipment on-demand. Connect farmers with verified machinery owners. Real-time booking, transparent pricing, and secure payments.</p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <button 
+                onClick={() => setStep('farmer-login')}
+                className="px-8 py-4 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-full font-bold hover:shadow-lg transition"
+              >
+                Get Started as Farmer
+              </button>
+              <button 
+                onClick={() => setStep('owner-login')}
+                className="px-8 py-4 border-2 border-white text-white rounded-full font-bold hover:bg-white hover:text-green-700 transition"
+              >
+                Earn as Owner
+              </button>
+            </div>
+          </div>
+        </section>
+
+        {/* Features Section */}
+        <section className="py-20 bg-white">
+          <div className="max-w-6xl mx-auto px-6">
+            <h2 className="text-4xl font-bold text-center text-gray-900 mb-16">Why Choose AgroFleet?</h2>
+            <div className="grid md:grid-cols-3 gap-8">
+              <div className="p-8 bg-green-50 rounded-2xl border border-green-200">
+                <div className="text-5xl mb-4">📍</div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-3">GPS-Based Matching</h3>
+                <p className="text-gray-700">Find available machinery near your farm with real-time GPS tracking and location-based recommendations.</p>
+              </div>
+              <div className="p-8 bg-green-50 rounded-2xl border border-green-200">
+                <div className="text-5xl mb-4">🔒</div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-3">Secure & Verified</h3>
+                <p className="text-gray-700">All owners are verified. Escrow payments protect both farmers and owners. 24/7 customer support.</p>
+              </div>
+              <div className="p-8 bg-green-50 rounded-2xl border border-green-200">
+                <div className="text-5xl mb-4">⚡</div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-3">Instant Booking</h3>
+                <p className="text-gray-700">Book machinery in minutes. Flexible rental periods. Real-time availability calendar.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Stats Section */}
+        <section className="py-20 bg-gradient-to-r from-green-600 to-green-700 text-white">
+          <div className="max-w-6xl mx-auto px-6">
+            <div className="grid md:grid-cols-4 gap-8 text-center">
+              <div>
+                <div className="text-5xl font-bold mb-2">50,000+</div>
+                <p className="text-green-100">Active Farmers</p>
+              </div>
+              <div>
+                <div className="text-5xl font-bold mb-2">5,000+</div>
+                <p className="text-green-100">Verified Owners</p>
+              </div>
+              <div>
+                <div className="text-5xl font-bold mb-2">₹10Cr+</div>
+                <p className="text-green-100">Transactions</p>
+              </div>
+              <div>
+                <div className="text-5xl font-bold mb-2">28</div>
+                <p className="text-green-100">States Covered</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* How It Works */}
+        <section className="py-20 bg-white">
+          <div className="max-w-6xl mx-auto px-6">
+            <h2 className="text-4xl font-bold text-center text-gray-900 mb-16">How It Works</h2>
+            <div className="grid md:grid-cols-3 gap-8">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center text-white font-bold text-2xl mx-auto mb-6">1</div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-3">Search</h3>
+                <p className="text-gray-700">Find machinery near your location using GPS-based search and filters.</p>
+              </div>
+              <div className="text-center">
+                <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center text-white font-bold text-2xl mx-auto mb-6">2</div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-3">Book</h3>
+                <p className="text-gray-700">Select dates, confirm booking, and secure payment with escrow protection.</p>
+              </div>
+              <div className="text-center">
+                <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center text-white font-bold text-2xl mx-auto mb-6">3</div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-3">Use & Track</h3>
+                <p className="text-gray-700">Track usage with GPS, upload photos, and complete your farm work.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section className="py-20 bg-gray-50">
+          <div className="max-w-4xl mx-auto px-6 text-center">
+            <h2 className="text-4xl font-bold text-gray-900 mb-6">Ready to Transform Your Farming?</h2>
+            <p className="text-xl text-gray-600 mb-12">Join thousands of farmers and owners already using AgroFleet to optimize their operations.</p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <button 
+                onClick={() => setStep('farmer-login')}
+                className="px-8 py-4 bg-green-600 text-white rounded-full font-bold hover:bg-green-700 transition"
+              >
+                Login as Farmer
+              </button>
+              <button 
+                onClick={() => setStep('owner-login')}
+                className="px-8 py-4 border-2 border-green-600 text-green-600 rounded-full font-bold hover:bg-green-50 transition"
+              >
+                Login as Owner
+              </button>
+            </div>
+          </div>
+        </section>
       </div>
     );
   }
 
-  // STEP 2: LOGIN
-  if (step === 'login') {
+  // FARMER LOGIN
+  if (step === 'farmer-login') {
     return (
       <div className="w-full min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-gray-900 flex items-center justify-center p-6">
         <div className="max-w-md w-full bg-white rounded-2xl p-8 shadow-2xl">
           <button 
-            onClick={handleBackToRoles}
+            onClick={() => setStep('landing')}
             className="text-gray-600 hover:text-gray-900 mb-6 flex items-center gap-2 font-semibold"
           >
-            ← Back to Role Selection
+            ← Back to Home
           </button>
 
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">
-            {role === 'farmer' ? 'Farmer' : 'Owner'} Login
-          </h2>
-          <p className="text-gray-600 mb-8">Sign in to your account</p>
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">Farmer Login</h2>
+          <p className="text-gray-600 mb-8">Sign in to rent machinery</p>
 
           <div className="space-y-4 mb-6">
             <input 
@@ -152,7 +195,7 @@ export default function MachineryRental() {
           </div>
 
           <button 
-            onClick={handleLogin}
+            onClick={() => setStep('farmer-dashboard')}
             className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-3 rounded-lg hover:shadow-lg transition mb-4"
           >
             Sign In
@@ -166,14 +209,57 @@ export default function MachineryRental() {
     );
   }
 
-  // STEP 3: FARMER DASHBOARD
+  // OWNER LOGIN
+  if (step === 'owner-login') {
+    return (
+      <div className="w-full min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-gray-900 flex items-center justify-center p-6">
+        <div className="max-w-md w-full bg-white rounded-2xl p-8 shadow-2xl">
+          <button 
+            onClick={() => setStep('landing')}
+            className="text-gray-600 hover:text-gray-900 mb-6 flex items-center gap-2 font-semibold"
+          >
+            ← Back to Home
+          </button>
+
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">Owner Login</h2>
+          <p className="text-gray-600 mb-8">Sign in to manage your machinery</p>
+
+          <div className="space-y-4 mb-6">
+            <input 
+              type="email" 
+              placeholder="Email address" 
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200" 
+            />
+            <input 
+              type="password" 
+              placeholder="Password" 
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200" 
+            />
+          </div>
+
+          <button 
+            onClick={() => setStep('owner-dashboard')}
+            className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-3 rounded-lg hover:shadow-lg transition mb-4"
+          >
+            Sign In
+          </button>
+
+          <p className="text-center text-gray-600">
+            Don't have an account? <a href="#" className="text-green-600 font-semibold hover:underline">Sign up</a>
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // FARMER DASHBOARD
   if (step === 'farmer-dashboard') {
     return (
       <div className="w-full min-h-screen bg-gray-50">
         {/* Header */}
         <header className="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
           <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent">AgroFleet</h1>
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent">AgroFleet - Farmer Dashboard</h1>
             <div className="flex items-center gap-4">
               <button className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition">Profile</button>
               <button 
@@ -239,7 +325,7 @@ export default function MachineryRental() {
             </div>
 
             {/* Machinery Cards */}
-            <h2 className="text-3xl font-bold text-gray-900 mb-8">Nearby Machines</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-8">Available Machinery</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {farmersData.map((machine, index) => (
                 <div key={index} className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all border border-gray-100">
@@ -303,13 +389,13 @@ export default function MachineryRental() {
         {/* Bookings Tab */}
         {activeTab === 'bookings' && (
           <div className="max-w-7xl mx-auto px-6 py-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-8">My Bookings & Usage Tracking</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-8">My Active Bookings</h2>
 
             <div className="bg-white rounded-2xl p-8 shadow-lg border-l-4 border-blue-500">
               <div className="grid md:grid-cols-3 gap-8">
                 <div>
                   <h3 className="text-2xl font-bold text-gray-900 mb-4">🚜 Tractor Rental</h3>
-                  <p className="text-gray-600 mb-6">Booked from: Rajesh P. (Nashik, MH)</p>
+                  <p className="text-gray-600 mb-6">From: Rajesh P. (Nashik)</p>
                   <div className="space-y-2">
                     <p className="text-gray-700"><span className="font-semibold">Start:</span> Today 08:00 AM</p>
                     <p className="text-gray-700"><span className="font-semibold">End:</span> Tomorrow 05:00 PM</p>
@@ -322,44 +408,28 @@ export default function MachineryRental() {
                   <div className="bg-gray-100 h-40 rounded-lg flex items-center justify-center mb-4 text-gray-600">
                     🗺️ Live GPS Map
                   </div>
-                  <p className="text-sm text-gray-600">Current location: Your Farm, Nashik</p>
+                  <p className="text-sm text-gray-600">Current location: Your Farm</p>
                 </div>
 
                 <div className="space-y-4">
-                  <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
-                    <p className="font-semibold text-yellow-800">⚠️ AI Monitoring</p>
-                    <p className="text-sm text-yellow-700 mt-2">Machine returned 2 hours late</p>
-                  </div>
                   <div className="bg-green-50 p-4 rounded-lg border border-green-200">
                     <p className="font-semibold text-green-800">✓ Work Status</p>
-                    <p className="text-sm text-green-700 mt-2">In Progress - 85% completed</p>
+                    <p className="text-sm text-green-700 mt-2">In Progress - 85%</p>
+                  </div>
+                  <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p className="font-semibold text-yellow-800">⚠️ AI Alert</p>
+                    <p className="text-sm text-yellow-700 mt-2">2 hours late return</p>
                   </div>
                 </div>
               </div>
 
               <div className="mt-8 flex gap-4">
                 <button className="px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white font-bold rounded-lg hover:shadow-lg transition">
-                  Mark as Completed
+                  Mark Complete
                 </button>
                 <button className="px-6 py-3 border border-gray-300 text-gray-700 font-bold rounded-lg hover:bg-gray-50 transition">
-                  Contact Support
+                  Support
                 </button>
-              </div>
-            </div>
-
-            <h3 className="text-2xl font-bold text-gray-900 mt-12 mb-6">AI Monitoring Alerts</h3>
-            <div className="grid md:grid-cols-3 gap-6">
-              <div className="bg-orange-50 border border-orange-200 rounded-xl p-6">
-                <p className="font-bold text-orange-800 mb-2">🚨 Late Arrival Warning</p>
-                <p className="text-sm text-orange-700">Pickup was delayed by 30 minutes</p>
-              </div>
-              <div className="bg-red-50 border border-red-200 rounded-xl p-6">
-                <p className="font-bold text-red-800 mb-2">⚠️ Incomplete Work Alert</p>
-                <p className="text-sm text-red-700">Only 85% of field completed</p>
-              </div>
-              <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-                <p className="font-bold text-green-800 mb-2">✓ No False Cancellation</p>
-                <p className="text-sm text-green-700">Booking completed as promised</p>
               </div>
             </div>
           </div>
@@ -368,14 +438,14 @@ export default function MachineryRental() {
     );
   }
 
-  // STEP 4: OWNER DASHBOARD
+  // OWNER DASHBOARD
   if (step === 'owner-dashboard') {
     return (
       <div className="w-full min-h-screen bg-gray-50">
         {/* Header */}
         <header className="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
           <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent">AgroFleet - Owner Hub</h1>
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent">AgroFleet - Owner Dashboard</h1>
             <div className="flex items-center gap-4">
               <button className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition">Profile</button>
               <button 
@@ -389,7 +459,7 @@ export default function MachineryRental() {
         </header>
 
         <div className="max-w-7xl mx-auto px-6 py-12">
-          {/* Dashboard Stats */}
+          {/* Stats */}
           <div className="grid md:grid-cols-4 gap-6 mb-12">
             <div className="bg-white rounded-xl p-6 shadow-lg">
               <p className="text-gray-600 text-sm font-semibold mb-2">Total Earnings</p>
@@ -409,7 +479,7 @@ export default function MachineryRental() {
             <div className="bg-white rounded-xl p-6 shadow-lg">
               <p className="text-gray-600 text-sm font-semibold mb-2">Trust Score</p>
               <p className="text-4xl font-bold text-yellow-600">4.8⭐</p>
-              <p className="text-xs text-gray-500 mt-2">32 farmer reviews</p>
+              <p className="text-xs text-gray-500 mt-2">32 reviews</p>
             </div>
           </div>
 
@@ -473,11 +543,10 @@ export default function MachineryRental() {
                     <p><span className="font-semibold">Category:</span> {machine.category}</p>
                     <p><span className="font-semibold">Price:</span> {machine.price}</p>
                     <p><span className="font-semibold">Location:</span> {machine.location}</p>
-                    <p><span className="font-semibold">Status:</span> <span className="text-green-600 font-bold">Available</span></p>
                   </div>
                   <div className="flex gap-2">
                     <button className="flex-1 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 text-sm font-bold">Edit</button>
-                    <button className="flex-1 bg-yellow-500 text-white py-2 rounded-lg hover:bg-yellow-600 text-sm font-bold">📊 Stats</button>
+                    <button className="flex-1 bg-yellow-500 text-white py-2 rounded-lg hover:bg-yellow-600 text-sm font-bold">Stats</button>
                     <button className="flex-1 bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 text-sm font-bold">Delete</button>
                   </div>
                 </div>
@@ -502,8 +571,7 @@ export default function MachineryRental() {
               <tbody>
                 {[
                   { farmer: 'Arjun Singh', machine: 'Tractor', dates: 'Dec 20-22', amount: '₹3,000', status: 'Pending' },
-                  { farmer: 'Priya Sharma', machine: 'Harvester', dates: 'Dec 23-25', amount: '₹15,000', status: 'Confirmed' },
-                  { farmer: 'Rajesh Kumar', machine: 'Rotavator', dates: 'Dec 26', amount: '₹1,200', status: 'Completed' }
+                  { farmer: 'Priya Sharma', machine: 'Harvester', dates: 'Dec 23-25', amount: '₹15,000', status: 'Confirmed' }
                 ].map((req, idx) => (
                   <tr key={idx} className="border-b hover:bg-gray-50">
                     <td className="px-6 py-4 text-gray-900 font-semibold">{req.farmer}</td>
@@ -511,7 +579,7 @@ export default function MachineryRental() {
                     <td className="px-6 py-4 text-gray-700">{req.dates}</td>
                     <td className="px-6 py-4 text-green-600 font-bold">{req.amount}</td>
                     <td className="px-6 py-4">
-                      <span className={`px-3 py-1 rounded-full text-sm font-semibold ${req.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' : req.status === 'Confirmed' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'}`}>
+                      <span className={`px-3 py-1 rounded-full text-sm font-semibold ${req.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-blue-100 text-blue-800'}`}>
                         {req.status}
                       </span>
                     </td>
