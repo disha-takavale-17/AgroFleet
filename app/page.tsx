@@ -105,7 +105,7 @@ export default function Home() {
             <span className="font-bold text-xl bg-gradient-to-r from-green-700 to-green-600 bg-clip-text text-transparent">AgroFleet</span>
           </div>
           <div className="hidden lg:flex gap-6">
-            <a href="#government-schemes" className="text-gray-700 hover:text-green-600 transition font-medium text-sm">Government Schemes</a>
+            <a href="/government-schemes" className="text-gray-700 hover:text-green-600 transition font-medium text-sm">Government Schemes</a>
             <a href="#fertilizer-ai" className="text-gray-700 hover:text-green-600 transition font-medium text-sm">Fertilizer AI</a>
             <a href="#how-it-works" className="text-gray-700 hover:text-green-600 transition font-medium text-sm">How It Works</a>
           </div>
@@ -189,7 +189,7 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-8">
             {[
               { icon: "🧪", title: "Smart Fertilizer AI", desc: "Get AI-powered fertilizer recommendations based on soil health and crops", id: "fertilizer-ai", link: "#" },
-              { icon: "📋", title: "Government Schemes", desc: "Navigate subsidies and schemes with expert guidance and easy applications", id: "government-schemes", link: "#" },
+              { icon: "📋", title: "Government Schemes", desc: "Navigate subsidies and schemes with expert guidance and easy applications", id: "government-schemes", link: "/government-schemes" },
               { icon: "⚖️", title: "Machine Comparison", desc: "Compare farm equipment features, prices, and availability side-by-side", id: "machine-comparison", link: "#" },
               { icon: "🎯", title: "Personalized Recommendations", desc: "Receive tailored suggestions based on your farm profile and needs", id: "personalized-recommendations", link: "#" },
               { icon: "🌾", title: "Crop-Based Guidance", desc: "Expert tips for every crop - from sowing to harvesting", id: "crop-guidance", link: "#" }
