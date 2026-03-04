@@ -106,7 +106,7 @@ export default function Home() {
           </div>
           <div className="hidden lg:flex gap-6">
             <a href="/government-schemes" className="text-gray-700 hover:text-green-600 transition font-medium text-sm">Government Schemes</a>
-            <a href="#fertilizer-ai" className="text-gray-700 hover:text-green-600 transition font-medium text-sm">Fertilizer AI</a>
+            <a href="/fertilizer-ai" className="text-gray-700 hover:text-green-600 transition font-medium text-sm">Fertilizer AI</a>
             <a href="#how-it-works" className="text-gray-700 hover:text-green-600 transition font-medium text-sm">How It Works</a>
           </div>
           <button className="px-6 py-2.5 bg-green-600 text-white rounded-full hover:bg-green-700 transition font-medium text-sm shadow-lg shadow-green-600/20">
@@ -188,7 +188,7 @@ export default function Home() {
 
           <div className="grid md:grid-cols-3 gap-8">
             {[
-              { icon: "🧪", title: "Smart Fertilizer AI", desc: "Get AI-powered fertilizer recommendations based on soil health and crops", id: "fertilizer-ai", link: "#" },
+              { icon: "🧪", title: "Smart Fertilizer AI", desc: "Get AI-powered fertilizer recommendations based on soil health and crops", id: "fertilizer-ai", link: "/fertilizer-ai" },
               { icon: "📋", title: "Government Schemes", desc: "Navigate subsidies and schemes with expert guidance and easy applications", id: "government-schemes", link: "/government-schemes" },
               { icon: "⚖️", title: "Machine Comparison", desc: "Compare farm equipment features, prices, and availability side-by-side", id: "machine-comparison", link: "#" },
               { icon: "🎯", title: "Personalized Recommendations", desc: "Receive tailored suggestions based on your farm profile and needs", id: "personalized-recommendations", link: "#" },
